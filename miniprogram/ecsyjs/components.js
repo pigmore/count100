@@ -1,6 +1,42 @@
 import { Component, Types } from "../build/ecsy.module.js";
 import { Vector2Type } from "./math.js";
 
+export class Texts extends Component {}
+Texts.schema = {
+  position: { type: Vector2Type },
+  id: { type: Types.String },
+  text: { type: Types.String },
+  size: { type: Types.Number, default:24},
+  color: { type: Types.String },
+  isTime: { type: Types.Boolean, default:false},
+  isLeft: { type: Types.Boolean, default:false},
+  isinClip:{type: Types.Boolean, default:false}
+  // playerImg: { type: Types.String }
+  // velocity: { type: Vector2Type },
+  // acceleration: { type: Vector2Type },
+};
+
+export class Button extends Component {}
+Button.schema = {
+  position: { type: Vector2Type },
+  size: { type: Vector2Type },
+  isBase: { type: Types.Boolean, default: false}
+};
+
+export class Player extends Component {}
+Player.schema = {
+  position: { type: Vector2Type },
+  radius: { type: Types.Number },
+  health: { type: Types.Number , default:3},
+  isOverWhelming: { type: Types.Number , default:0},
+  isHolding: { type: Types.Boolean, default: false},
+  playerImg: { type: Types.JSON },
+  isInit:{type: Types.Number , default:-1},
+  isFinish:{type: Types.Number , default:1}
+  // velocity: { type: Vector2Type },
+  // acceleration: { type: Vector2Type },
+};
+
 export class Movement extends Component {}
 
 Movement.schema = {

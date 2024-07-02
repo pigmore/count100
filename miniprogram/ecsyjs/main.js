@@ -1,7 +1,15 @@
 import {World, System} from '../build/ecsy.module.js';
-import {Movement, Circle, CanvasContext, DemoSettings, Intersecting} from './components.js';
+import {Movement,
+   Circle,
+   Button,
+   Texts,
+    CanvasContext, DemoSettings, Intersecting} from './components.js';
 import {MovementSystem, Renderer, IntersectionSystem} from './systems.js';
-import {random} from './utils.js';
+import {random,
+  screenFixX,
+  screenFixY,
+  genButton,
+} from './utils.js';
 
 function update() {
   var time = performance.now();
@@ -17,9 +25,11 @@ export default class Main {
     // 维护当前requestAnimationFrame的id
     this.aniId = 0
 
-    var world = new World();
+    this.world = new World();
 
-    world
+    this.world
+      .registerComponent(Texts)
+      .registerComponent(Button)
       .registerComponent(Circle)
       .registerComponent(Movement)
       .registerComponent(Intersecting)
@@ -30,7 +40,7 @@ export default class Main {
       .registerSystem(IntersectionSystem);
     // this.restart()
 
-    var singletonEntity = world.createEntity()
+    var singletonEntity = this.world.createEntity()
         .addComponent(CanvasContext)
         .addComponent(DemoSettings);
 
@@ -43,32 +53,59 @@ export default class Main {
     canvasComponent.width = canvas.width;
     canvasComponent.height = canvas.height;
 
-    for (var i = 0; i < 6; i++) {
-      var entity = world
-        .createEntity()
-        .addComponent(Circle)
-        .addComponent(Movement);
+    // for (var i = 0; i < 6; i++) {
+    //   var entity = world
+    //     .createEntity()
+    //     .addComponent(Circle)
+    //     .addComponent(Movement);
+    //
+    //   var circle = entity.getMutableComponent(Circle);
+    //   circle.position.set(random(0, canvas.width), random(0, canvas.height));
+    //   circle.radius = random(20, 100);
+    //
+    //   var movement = entity.getMutableComponent(Movement);
+    //   movement.velocity.set(random(-80, 80), random(-80, 80));
+    // }
+    this.initbutton()
 
-      var circle = entity.getMutableComponent(Circle);
-      circle.position.set(random(0, canvas.width), random(0, canvas.height));
-      circle.radius = random(20, 100);
+    window.world = this.world;
 
-      var movement = entity.getMutableComponent(Movement);
-      movement.velocity.set(random(-80, 80), random(-80, 80));
-    }
-
-    window.world = world;
-    window.Circle = Circle;
-    window.Movement = Movement;
-
-    window.addEventListener( 'resize', () => {
-      canvasComponent.width = canvas.width = window.innerWidth
-      canvasComponent.height = canvas.height = window.innerHeight;
-    }, false );
+    // window.addEventListener( 'resize', () => {
+    //   canvasComponent.width = canvas.width = window.innerWidth
+    //   canvasComponent.height = canvas.height = window.innerHeight;
+    // }, false );
 
     window.lastTime = performance.now();
-    console.log('requestAnimationFrame update')
+    // console.log('requestAnimationFrame update')
+
     update()
+  }
+  initbutton(){
+    var entity3 = this.world
+      .createEntity()
+      .addComponent(Button)
+
+    var i0 = entity3.getMutableComponent(Button);
+    i0.position.set(screenFixX((375 - 300)/2), screenFixY((812-300)));
+    i0.size.set(300, 70);
+
+    genButton(this.world,375/2,812-165,300,70, window.userLanguage == 'en' ? 'CHALLENGE':'挑战',window.starSum < 0,0,window.starSum < 0,10)
+
+  }
+
+
+  initPlayer() {
+    let player = this.world
+      .createEntity()
+      .addComponent(Player)
+      .addComponent(Movement);
+
+    var player0 = player.getMutableComponent(Player);
+    player0.position.set(0,0);
+    // playerImg.onload
+    // player0.playerImg = playerImg;
+    player0.radius = 5;
+    player0.health = 5;
   }
 
 }

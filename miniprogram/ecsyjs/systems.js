@@ -4,9 +4,12 @@ import {
   DemoSettings,
   Movement,
   Circle,
+  Button,
   Intersecting,
 } from "./components.js";
-import { fillCircle, drawLine, intersection } from "./utils.js";
+import { fillCircle, drawLine, intersection,
+  drawRoundedRect
+ } from "./utils.js";
 
 export class MovementSystem extends System {
   execute(delta) {
@@ -155,52 +158,32 @@ export class Renderer extends System {
     let ctx = canvasComponent.ctx;
     let canvasWidth = canvasComponent.width;
     let canvasHeight = canvasComponent.height;
-
+    ctx.restore()
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    ctx.save()
 
-    let circles = this.queries.circles.results;
-    for (var i = 0; i < circles.length; i++) {
-      let circle = circles[i].getComponent(Circle);
+    let buttons = this.queries.buttons.results;
+    ctx.strokeStyle = 'black';
+    ctx.fillStyle = "#42A767";
+    ctx.lineWidth = 7;
 
-      ctx.beginPath();
-      ctx.arc(
-        circle.position.x,
-        circle.position.y,
-        circle.radius,
-        0,
-        2 * Math.PI,
-        false
-      );
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "#fff";
-      ctx.stroke();
-    }
+    for (var i = 0; i < buttons.length; i++) {
+      let button = buttons[i].getComponent(Button);
 
-    let intersectingCircles = this.queries.intersectingCircles.results;
-    for (let i = 0; i < intersectingCircles.length; i++) {
-      let intersect = intersectingCircles[i].getComponent(Intersecting);
-      for (var j = 0; j < intersect.points.length; j++) {
-        var points = intersect.points[j];
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "#ff9";
-
-        ctx.fillStyle = "rgba(255, 255,255, 0.2)";
-        fillCircle(ctx, points[0], points[1], 8);
-        fillCircle(ctx, points[2], points[3], 8);
-
-        ctx.fillStyle = "#fff";
-        fillCircle(ctx, points[0], points[1], 3);
-        fillCircle(ctx, points[2], points[3], 3);
-
-        drawLine(ctx, points[0], points[1], points[2], points[3]);
+      drawRoundedRect(ctx,
+        button.position.x,
+         button.position.y,
+          button.size.x,
+           button.size.y,
+            15)
       }
-    }
   }
 }
 
 Renderer.queries = {
   circles: { components: [Circle] },
+  buttons: { components: [Button] },
   intersectingCircles: { components: [Intersecting] },
   context: { components: [CanvasContext], mandatory: true },
 };
