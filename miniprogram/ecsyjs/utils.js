@@ -102,6 +102,7 @@ export function screenFixY(_y) {
 }
 
 export function genButton(world,x,y,w,h,t,l=false,s=0,c=false,sn,_topindex = 0) {
+  console.log('genButton')
   var textArray = [
     '挑战',
     '生存模式',
@@ -115,12 +116,14 @@ export function genButton(world,x,y,w,h,t,l=false,s=0,c=false,sn,_topindex = 0) 
     '开始',
     '重试',
     '重试',
+    '+1',
+    '+',
   ]
   var entity2 = world
     .createEntity()
     .addComponent(Texts)
   var t2 = entity2.getMutableComponent(Texts);
-  t2.position.set(screenFixX(x + 3), screenFixY(y + 24 - (textArray.indexOf(t) > -1 ? 14:9)));
+  t2.position.set(screenFixX(x + 3 - (textArray.indexOf(t) > -1 ? 2:0)), screenFixY(y + 24 - (textArray.indexOf(t) > -1 ? 14:9)));
   t2.text = t;
   t2.size = textArray.indexOf(t) > -1 ? 30 : 24;
   t2.color = l?'#bbb':'#ffffff';

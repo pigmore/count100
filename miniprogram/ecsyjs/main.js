@@ -69,7 +69,7 @@ export default class Main {
     this.initbutton()
 
     window.world = this.world;
-
+    console.log(window.world)
     // window.addEventListener( 'resize', () => {
     //   canvasComponent.width = canvas.width = window.innerWidth
     //   canvasComponent.height = canvas.height = window.innerHeight;
@@ -81,15 +81,15 @@ export default class Main {
     update()
   }
   initbutton(){
-    var entity3 = this.world
-      .createEntity()
-      .addComponent(Button)
+    // var entity3 = this.world
+    //   .createEntity()
+    //   .addComponent(Button)
+    //
+    // var i0 = entity3.getMutableComponent(Button);
+    // i0.position.set(screenFixX((375 - 300)/2), screenFixY((812-300)));
+    // i0.size.set(300, 70);
 
-    var i0 = entity3.getMutableComponent(Button);
-    i0.position.set(screenFixX((375 - 300)/2), screenFixY((812-300)));
-    i0.size.set(300, 70);
-
-    genButton(this.world,375/2,812-165,300,70, window.userLanguage == 'en' ? 'CHALLENGE':'挑战',window.starSum < 0,0,window.starSum < 0,10)
+    genButton(this.world,375/2,812-165,50,50, window.userLanguage == 'en' ? 'CHALLENGE':'+',window.starSum < 0,0,window.starSum < 0,10)
 
   }
 
