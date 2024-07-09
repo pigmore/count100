@@ -167,60 +167,70 @@ export class Renderer extends System {
     let buttons = this.queries.buttons.results;
     let texts = this.queries.texts.results;
 
-    ctx.strokeStyle = 'black';
-    ctx.fillStyle = "#42A767";
-    ctx.lineWidth = 7;
+
 
     for (var i = 0; i < buttons.length; i++) {
+      ctx.save()
       let button = buttons[i].getComponent(Button);
-      
+
+      ctx.strokeStyle = 'black';
+      ctx.fillStyle = "#42A767";
+      ctx.lineWidth = 7;
       drawRoundedRect(ctx,
         button.position.x,
          button.position.y,
           button.size.x,
            button.size.y,
             15)
+
+            ctx.font = `24px pixeled`;
+               ctx.strokeStyle = 'black';
+               ctx.lineWidth = 7;
+               ctx.strokeText(button.text, button.position.x + button.size.x / 2 - 9, button.position.y + button.size.y / 2 + 8);
+                  ctx.fillStyle = 'white'
+              ctx.fillText(button.text, button.position.x + button.size.x / 2 - 9, button.position.y + button.size.y / 2 + 8);
+        ctx.restore()
       }
 
-      for (var i = 0; i < texts.length; i++) {
-        let text = texts[i].getComponent(Texts);
-        if (text.isinClip) continue
-        ctx.textAlign = 'center';
-        if (text.isTime ) {
-
-          if (window.clevelNum >= 0) {
-
-            window.timeLast += window.onHide ? 0 :  delta * 1000
-            window.timeleft += window.onHide ? 0 :  -delta * 1000
-            if (window.timeleft <=0) {
-              window.mainNode.gameRemoveAll0()
-              window.mainNode.initSettlementC()
-            }
-          } else{
-            window.timeleft += window.onHide ? 0 : -delta * 1000
-            window.timeLast += window.onHide ? 0 :  delta * 1000
-            if (window.timeleft <=0) {
-              window.mainNode.gameRemoveAll0()
-              window.mainNode.initSettlement()
-            }
-          }
-
-          ctx.textAlign = 'left';
-          // console.log(delta)
-          // console.log(window.timeleft)
-          // text.text = timetoText(window.timeleft)
-        }
-        if (text.isLeft) {
-            ctx.textAlign = 'left';
-        }
-         ctx.font = `${text.size}px pixeled`;
-         ctx.strokeStyle = 'black';
-         ctx.lineWidth = 7;
-
-         ctx.strokeText(text.id == 'power' ? `${window.powerNum}/10` :text.isTime ? timetoText(window.timeleft):text.text, text.position.x, text.position.y);
-         ctx.fillStyle = text.color;
-        ctx.fillText(text.id == 'power' ? `${window.powerNum}/10` :text.isTime ? timetoText(window.timeleft):text.text, text.position.x, text.position.y);
-      }
+      // for (var i = 0; i < texts.length; i++) {
+      //   let text = texts[i].getComponent(Texts);
+      //   if (text.isinClip) continue
+      //   ctx.textAlign = 'center';
+      //   if (text.isTime ) {
+      //
+      //     if (window.clevelNum >= 0) {
+      //
+      //       window.timeLast += window.onHide ? 0 :  delta * 1000
+      //       window.timeleft += window.onHide ? 0 :  -delta * 1000
+      //       if (window.timeleft <=0) {
+      //         window.mainNode.gameRemoveAll0()
+      //         window.mainNode.initSettlementC()
+      //       }
+      //     } else{
+      //       window.timeleft += window.onHide ? 0 : -delta * 1000
+      //       window.timeLast += window.onHide ? 0 :  delta * 1000
+      //       if (window.timeleft <=0) {
+      //         window.mainNode.gameRemoveAll0()
+      //         window.mainNode.initSettlement()
+      //       }
+      //     }
+      //
+      //     ctx.textAlign = 'left';
+      //     // console.log(delta)
+      //     // console.log(window.timeleft)
+      //     // text.text = timetoText(window.timeleft)
+      //   }
+      //   if (text.isLeft) {
+      //       ctx.textAlign = 'left';
+      //   }
+      //    ctx.font = `${text.size}px pixeled`;
+      //    ctx.strokeStyle = 'black';
+      //    ctx.lineWidth = 7;
+      //
+      //    ctx.strokeText(text.id == 'power' ? `${window.powerNum}/10` :text.isTime ? timetoText(window.timeleft):text.text, text.position.x, text.position.y);
+      //    ctx.fillStyle = text.color;
+      //   ctx.fillText(text.id == 'power' ? `${window.powerNum}/10` :text.isTime ? timetoText(window.timeleft):text.text, text.position.x, text.position.y);
+      // }
   }
 }
 

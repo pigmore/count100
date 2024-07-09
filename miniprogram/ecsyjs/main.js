@@ -67,7 +67,7 @@ export default class Main {
     //   movement.velocity.set(random(-80, 80), random(-80, 80));
     // }
     this.initbutton()
-
+    canvas.addEventListener('touchstart', this.touchHandlerDealerselect.bind(this))
     window.world = this.world;
     console.log(window.world)
     // window.addEventListener( 'resize', () => {
@@ -89,8 +89,19 @@ export default class Main {
     // i0.position.set(screenFixX((375 - 300)/2), screenFixY((812-300)));
     // i0.size.set(300, 70);
 
-    genButton(this.world,375/2,812-165,50,50, window.userLanguage == 'en' ? 'CHALLENGE':'+',window.starSum < 0,0,window.starSum < 0,10)
+    // genButton(this.world,375/2,812-165,50,50, window.userLanguage == 'en' ? 'CHALLENGE':'+',window.starSum < 0,0,window.starSum < 0,10)
+    this.genButtonNew(random(0,325),random(0,812-50),50,50)
+  }
 
+  genButtonNew(x,y,w,h,t){
+    console.log('genButtonNew')
+    var entity3 = this.world
+     .createEntity()
+     .addComponent(Button)
+
+   var i0 = entity3.getMutableComponent(Button);
+   i0.position.set(screenFixX(x), screenFixY(y));
+   i0.size.set(w, h);
   }
 
 
@@ -106,6 +117,49 @@ export default class Main {
     // player0.playerImg = playerImg;
     player0.radius = 5;
     player0.health = 5;
+  }
+
+  checkselecButton(x,y) {
+    var buttons = this.world.systemManager._executeSystems[1].queries.buttons.results;
+    for (var item of buttons) {
+      if (x > (item._components[1].position.x)
+        && x < (item._components[1].position.x + item._components[1].size.x)
+        && y > (item._components[1].position.y)
+        && y < (item._components[1].position.y + item._components[1].size.y)) {
+
+          return true
+      }
+    // window.levelNum += 1
+    }
+    // window.levelNum = 0
+    return false
+  }
+
+  removeEntities(_array) {
+    for (var item of _array) {
+      if (item.length >= 1 ) {
+        for (var i = 0; i < item.length; i++) {
+            item[0].remove()
+          i--
+        }
+      }
+    }
+  }
+
+  removeBtn(){
+      this.world.systemManager._executeSystems[1].queries.buttons.results[0].remove()
+  }
+
+  touchHandlerDealerselect(e) {
+      e.preventDefault()
+      console.log('touchHandlerDealerselect')
+      if (
+        this.checkselecButton(e.touches[0].clientX,e.touches[0].clientY)
+
+      ){
+        this.removeBtn()
+        this.genButtonNew(random(0,325),random(0,812-50),50,50)
+      }
   }
 
 }

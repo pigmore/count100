@@ -20,7 +20,8 @@ export class Button extends Component {}
 Button.schema = {
   position: { type: Vector2Type },
   size: { type: Vector2Type },
-  isBase: { type: Types.Boolean, default: false}
+  isBase: { type: Types.Boolean, default: false},
+  text:{type: Types.String, default:'+'}
 };
 
 export class Player extends Component {}
