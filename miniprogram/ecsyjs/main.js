@@ -24,7 +24,9 @@ export default class Main {
   constructor() {
     // 维护当前requestAnimationFrame的id
     this.aniId = 0
-
+    window.timeLeft = 100
+    window.countScroe = 0
+    window.pop = '+1'
     this.world = new World();
 
     this.world
@@ -66,7 +68,7 @@ export default class Main {
     //   var movement = entity.getMutableComponent(Movement);
     //   movement.velocity.set(random(-80, 80), random(-80, 80));
     // }
-    this.initbutton()
+    this.init()
     canvas.addEventListener('touchstart', this.touchHandlerDealerselect.bind(this))
     window.world = this.world;
     console.log(window.world)
@@ -80,7 +82,7 @@ export default class Main {
 
     update()
   }
-  initbutton(){
+  init(){
     // var entity3 = this.world
     //   .createEntity()
     //   .addComponent(Button)
@@ -91,10 +93,22 @@ export default class Main {
 
     // genButton(this.world,375/2,812-165,50,50, window.userLanguage == 'en' ? 'CHALLENGE':'+',window.starSum < 0,0,window.starSum < 0,10)
     this.genButtonNew(random(0,325),random(0,812-50),50,50)
+    this.genText('countScroe',20,40,'0')
   }
 
+  genText(id='',x,y,t,s=36){
+    var entity0 = this.world
+      .createEntity()
+      .addComponent(Texts)
+    var t0 = entity0.getMutableComponent(Texts);
+     t0.position.set(screenFixX(x), screenFixY(y));
+     t0.id = id;
+     t0.text = t;
+     t0.color = '#ffffff';
+     t0.size = s;
+  }
   genButtonNew(x,y,w,h,t){
-    console.log('genButtonNew')
+    // console.log('genButtonNew')
     var entity3 = this.world
      .createEntity()
      .addComponent(Button)
@@ -152,12 +166,14 @@ export default class Main {
 
   touchHandlerDealerselect(e) {
       e.preventDefault()
-      console.log('touchHandlerDealerselect')
+      // console.log('touchHandlerDealerselect')
       if (
         this.checkselecButton(e.touches[0].clientX,e.touches[0].clientY)
 
       ){
+        window.countScroe += 1
         this.removeBtn()
+        this.genText('pop',e.touches[0].clientX,e.touches[0].clientY,'+1',24)
         this.genButtonNew(random(0,325),random(0,812-50),50,50)
       }
   }

@@ -186,14 +186,30 @@ export class Renderer extends System {
             ctx.font = `24px pixeled`;
                ctx.strokeStyle = 'black';
                ctx.lineWidth = 7;
-               ctx.strokeText(button.text, button.position.x + button.size.x / 2 - 9, button.position.y + button.size.y / 2 + 8);
+               ctx.strokeText(button.text, button.position.x + button.size.x / 2 - 7, button.position.y + button.size.y / 2 + 7);
                   ctx.fillStyle = 'white'
-              ctx.fillText(button.text, button.position.x + button.size.x / 2 - 9, button.position.y + button.size.y / 2 + 8);
+              ctx.fillText(button.text, button.position.x + button.size.x / 2 - 7, button.position.y + button.size.y / 2 + 7);
         ctx.restore()
       }
 
-      // for (var i = 0; i < texts.length; i++) {
-      //   let text = texts[i].getComponent(Texts);
+      for (var i = 0; i < texts.length; i++) {
+        let text = texts[i].getMutableComponent(Texts);
+        ctx.font = `${text.size}px pixeled`;
+         ctx.strokeStyle = 'black';
+         ctx.lineWidth = 7;
+         text.text = window[text.id]
+         ctx.strokeText(text.text, text.position.x, text.position.y);
+         ctx.fillStyle = text.color;
+        ctx.fillText(text.text, text.position.x, text.position.y);
+         if (text.id == 'pop') {
+           text.count += 1
+           text.size += text.count > 5 ? -1 : 2
+           text.position.y += text.count > 5 ? -1 : -1
+           text.position.x += text.count > 5 ? 1 : -2
+           if (text.size < 1 ) texts[i].remove()
+         }
+
+      }
       //   if (text.isinClip) continue
       //   ctx.textAlign = 'center';
       //   if (text.isTime ) {

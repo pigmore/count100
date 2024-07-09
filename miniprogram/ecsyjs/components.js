@@ -5,7 +5,8 @@ export class Texts extends Component {}
 Texts.schema = {
   position: { type: Vector2Type },
   id: { type: Types.String },
-  text: { type: Types.String },
+  text: { type: Types.String, default:"+1" },
+  count: { type: Types.Number },
   size: { type: Types.Number, default:24},
   color: { type: Types.String },
   isTime: { type: Types.Boolean, default:false},
