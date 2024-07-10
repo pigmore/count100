@@ -2,6 +2,7 @@ import {World, System} from '../build/ecsy.module.js';
 import {Movement,
    Circle,
    Button,
+   Confetti,
    Texts,
     CanvasContext, DemoSettings, Intersecting} from './components.js';
 import {MovementSystem, Renderer, IntersectionSystem} from './systems.js';
@@ -32,6 +33,7 @@ export default class Main {
     this.world
       .registerComponent(Texts)
       .registerComponent(Button)
+      .registerComponent(Confetti)
       .registerComponent(Circle)
       .registerComponent(Movement)
       .registerComponent(Intersecting)
@@ -164,6 +166,22 @@ export default class Main {
       this.world.systemManager._executeSystems[1].queries.buttons.results[0].remove()
   }
 
+  genConfetti(x,y){
+    for (var i = 0; i < 30; i++) {
+      var entity3 = this.world
+        .createEntity()
+        .addComponent(Confetti)
+
+      var i0 = entity3.getMutableComponent(Confetti);
+      i0.position.set(screenFixX(x + random(-15,15)),screenFixY(y + random(-15,15)));
+      // i0.size.set(300, 350);
+      i0.color = `rgb(${random(0,255)}, ${random(0,255)},${random(0,255)})`;
+      i0.count = random(0,10)
+      i0.rotate = random(0,6.28)
+      i0.height = random(414,1600)
+    }
+  }
+
   touchHandlerDealerselect(e) {
       e.preventDefault()
       // console.log('touchHandlerDealerselect')
@@ -173,6 +191,7 @@ export default class Main {
       ){
         window.countScroe += 1
         this.removeBtn()
+        this.genConfetti(e.touches[0].clientX,e.touches[0].clientY)
         this.genText('pop',e.touches[0].clientX,e.touches[0].clientY,'+1',24)
         this.genButtonNew(random(0,325),random(0,812-50),50,50)
       }

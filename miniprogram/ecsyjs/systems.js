@@ -6,9 +6,14 @@ import {
   Circle,
   Texts,
   Button,
+  Confetti,
   Intersecting,
 } from "./components.js";
-import { fillCircle, drawLine, intersection,
+import {
+  fillCircle,
+   drawLine,
+   random,
+   intersection,
   drawRoundedRect
  } from "./utils.js";
 
@@ -166,8 +171,43 @@ export class Renderer extends System {
 
     let buttons = this.queries.buttons.results;
     let texts = this.queries.texts.results;
+    let confettis = this.queries.confettis.results;
 
 
+    for (var item of confettis) {
+      let confetti = item.getMutableComponent(Confetti);
+      if (confetti) {
+        confetti.count += 1
+        confetti.position.x += random(-3,3) + Math.cos(confetti.rotate)  * ( 45 - confetti.count ) / 5
+        confetti.position.y += random(-3,3) + Math.sin(confetti.rotate) * ( 45 - confetti.count ) / 5
+        ctx.fillStyle = confetti.color;
+        // fillShadowCircle(ctx, 0, 0, circle.radius);
+        // ctx.rotate(circle.rotateDegree * Math.PI / 180)
+        ctx.save()
+        ctx.translate(confetti.position.x ,confetti.position.y
+          // + (
+          //
+          // confetti.count > 25 ?
+          // + confetti.count * 3:
+          // + 3 * confetti.count
+          // )
+        )
+        ctx.rotate(confetti.rotate)
+
+        ctx.fillRect(
+        - (confetti.count % 20) / 2,
+        0,
+
+        confetti.count % 20,
+        7,
+        );
+        ctx.restore()
+        if (confetti.count > 35){
+          item.remove()
+        }
+      }
+
+    }
 
     for (var i = 0; i < buttons.length; i++) {
       ctx.save()
@@ -254,6 +294,7 @@ Renderer.queries = {
   circles: { components: [Circle] },
   texts: { components: [Texts] },
   buttons: { components: [Button] },
+  confettis: { components: [Confetti] },
   intersectingCircles: { components: [Intersecting] },
   context: { components: [CanvasContext], mandatory: true },
 };
