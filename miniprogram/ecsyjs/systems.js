@@ -7,6 +7,7 @@ import {
   Texts,
   Button,
   Confetti,
+  Firework,
   Intersecting,
 } from "./components.js";
 import {
@@ -172,8 +173,43 @@ export class Renderer extends System {
     let buttons = this.queries.buttons.results;
     let texts = this.queries.texts.results;
     let confettis = this.queries.confettis.results;
+    let fireworks = this.queries.fireworks.results;
 
 
+    for (var item of fireworks) {
+      let firework = item.getMutableComponent(Firework);
+      if (firework) {
+        firework.count += 1
+        firework.position.x += Math.cos(firework.rotate)  * ( 200 - firework.count * firework.count / 8 ) / 20
+        firework.position.y += Math.sin(firework.rotate) * ( 200 - firework.count * firework.count / 8) / 20 + 0.2 * firework.count
+        ctx.fillStyle = firework.color;
+        // fillShadowCircle(ctx, 0, 0, circle.radius);
+        // ctx.rotate(circle.rotateDegree * Math.PI / 180)
+        // ctx.save()
+        // ctx.translate(firework.position.x ,firework.position.y)
+        // ctx.rotate(firework.rotate)
+
+
+        // ctx.fillRect(
+        // - (firework.count % 20) / 2,
+        // 0,
+        //
+        // firework.count % 20,
+        // 7,
+        // );
+        // ctx.restore()
+        // for (var i = 0; i < 10; i++) {
+          fillCircle(ctx,
+            firework.position.x,
+            firework.position.y,
+            4)
+        // }
+
+        if (firework.count > 40){
+          item.remove()
+        }
+      }
+    }
     for (var item of confettis) {
       let confetti = item.getMutableComponent(Confetti);
       if (confetti) {
@@ -295,6 +331,7 @@ Renderer.queries = {
   texts: { components: [Texts] },
   buttons: { components: [Button] },
   confettis: { components: [Confetti] },
+  fireworks: { components: [Firework] },
   intersectingCircles: { components: [Intersecting] },
   context: { components: [CanvasContext], mandatory: true },
 };

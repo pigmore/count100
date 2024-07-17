@@ -3,6 +3,7 @@ import {Movement,
    Circle,
    Button,
    Confetti,
+   Firework,
    Texts,
     CanvasContext, DemoSettings, Intersecting} from './components.js';
 import {MovementSystem, Renderer, IntersectionSystem} from './systems.js';
@@ -34,6 +35,7 @@ export default class Main {
       .registerComponent(Texts)
       .registerComponent(Button)
       .registerComponent(Confetti)
+      .registerComponent(Firework)
       .registerComponent(Circle)
       .registerComponent(Movement)
       .registerComponent(Intersecting)
@@ -166,6 +168,21 @@ export default class Main {
       this.world.systemManager._executeSystems[1].queries.buttons.results[0].remove()
   }
 
+  genFirework(x,y){
+    for (var i = 0; i < 50; i++) {
+      var entity3 = this.world
+        .createEntity()
+        .addComponent(Firework)
+
+      var i0 = entity3.getMutableComponent(Firework);
+      i0.position.set(screenFixX(x + random(-15,15)),screenFixY(y + random(-15,15)));
+      // i0.size.set(300, 350);
+      i0.color = `rgb(${random(0,255)}, ${random(0,255)},${random(0,255)})`;
+      i0.count = random(0,10)
+      i0.rotate = random(0,6.28)
+      i0.height = random(414,1600)
+    }
+  }
   genConfetti(x,y){
     for (var i = 0; i < 30; i++) {
       var entity3 = this.world
@@ -191,7 +208,8 @@ export default class Main {
       ){
         window.countScroe += 1
         this.removeBtn()
-        this.genConfetti(e.touches[0].clientX,e.touches[0].clientY)
+        // this.genConfetti(e.touches[0].clientX,e.touches[0].clientY)
+        this.genFirework(e.touches[0].clientX,e.touches[0].clientY)
         this.genText('pop',e.touches[0].clientX,e.touches[0].clientY,'+1',24)
         this.genButtonNew(random(0,325),random(0,812-50),50,50)
       }
