@@ -4,6 +4,7 @@ import {Movement,
    Button,
    Confetti,
    Firework,
+   Particle,
    Texts,
     CanvasContext, DemoSettings, Intersecting} from './components.js';
 import {MovementSystem, Renderer, IntersectionSystem} from './systems.js';
@@ -36,6 +37,7 @@ export default class Main {
       .registerComponent(Button)
       .registerComponent(Confetti)
       .registerComponent(Firework)
+      .registerComponent(Particle)
       .registerComponent(Circle)
       .registerComponent(Movement)
       .registerComponent(Intersecting)
@@ -168,8 +170,9 @@ export default class Main {
       this.world.systemManager._executeSystems[1].queries.buttons.results[0].remove()
   }
 
+
   genFirework(x,y){
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < 100; i++) {
       var entity3 = this.world
         .createEntity()
         .addComponent(Firework)
@@ -211,7 +214,7 @@ export default class Main {
         // this.genConfetti(e.touches[0].clientX,e.touches[0].clientY)
         this.genFirework(e.touches[0].clientX,e.touches[0].clientY)
         this.genText('pop',e.touches[0].clientX,e.touches[0].clientY,'+1',24)
-        this.genButtonNew(random(0,325),random(0,812-50),50,50)
+        this.genButtonNew(random(0,325),random(150,812-150),50,50)
       }
   }
 

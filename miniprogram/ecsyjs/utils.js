@@ -1,10 +1,27 @@
 import {Movement,
    Circle,
+   Particle,
    Button,
    Texts,
     CanvasContext, DemoSettings, Intersecting} from './components.js';
 export function random(a, b) {
   return Math.random() * (b - a) + a;
+}
+
+export function genParticles(x,y,c){
+  // for (var i = 0; i < 50; i++) {
+    var entity3 = window.world
+      .createEntity()
+      .addComponent(Particle)
+
+    var i0 = entity3.getMutableComponent(Particle);
+    i0.position.set(screenFixX(x),screenFixY(y));
+    // i0.size.set(300, 350);
+    i0.color = c;
+    i0.count = 0
+    // i0.rotate = random(0,6.28)
+    // i0.height = random(414,1600)
+
 }
 
 export function intersection(circleA, circleB) {

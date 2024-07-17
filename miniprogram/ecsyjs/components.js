@@ -1,6 +1,15 @@
 import { Component, Types } from "../build/ecsy.module.js";
 import { Vector2Type } from "./math.js";
 
+export class Particle extends Component {}
+Particle.schema = {
+  position: { type: Vector2Type },
+  color: { type: Types.String },
+  // size: { type: Vector2Type },
+  count: { type: Types.Number, default: 0},
+  // rotate: { type: Types.Number, default: 0},
+  // height: { type: Types.Number, default: 0},
+};
 export class Firework extends Component {}
 Firework.schema = {
   position: { type: Vector2Type },

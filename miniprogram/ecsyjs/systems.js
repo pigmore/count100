@@ -8,12 +8,14 @@ import {
   Button,
   Confetti,
   Firework,
+  Particle,
   Intersecting,
 } from "./components.js";
 import {
   fillCircle,
    drawLine,
    random,
+   genParticles,
    intersection,
   drawRoundedRect
  } from "./utils.js";
@@ -174,14 +176,30 @@ export class Renderer extends System {
     let texts = this.queries.texts.results;
     let confettis = this.queries.confettis.results;
     let fireworks = this.queries.fireworks.results;
+    let particles = this.queries.particles.results;
 
-
+    ctx.globalCompositeOperation="lighter"
+    for (var item of particles) {
+      let particle = item.getMutableComponent(Particle);
+      if (particle) {
+        ctx.fillStyle = particle.color;
+        particle.count += 1
+        fillCircle(ctx,
+          particle.position.x,
+          particle.position.y,
+          8 - particle.count / 2)
+        if (particle.count > 15){
+          item.remove()
+        }
+      }
+    }
+    ctx.globalCompositeOperation="source-over"
     for (var item of fireworks) {
       let firework = item.getMutableComponent(Firework);
       if (firework) {
         firework.count += 1
         firework.position.x += Math.cos(firework.rotate)  * ( 200 - firework.count * firework.count / 8 ) / 20
-        firework.position.y += Math.sin(firework.rotate) * ( 200 - firework.count * firework.count / 8) / 20 + 0.2 * firework.count
+        firework.position.y += Math.sin(firework.rotate) * ( 200 - firework.count * firework.count / 8) / 20 + 0.1 * firework.count
         ctx.fillStyle = firework.color;
         // fillShadowCircle(ctx, 0, 0, circle.radius);
         // ctx.rotate(circle.rotateDegree * Math.PI / 180)
@@ -199,13 +217,15 @@ export class Renderer extends System {
         // );
         // ctx.restore()
         // for (var i = 0; i < 10; i++) {
-          fillCircle(ctx,
-            firework.position.x,
-            firework.position.y,
-            4)
+          genParticles(firework.position.x,firework.position.y,firework.color)
+
+          // fillCircle(ctx,
+          //   firework.position.x,
+          //   firework.position.y,
+          //   4)
         // }
 
-        if (firework.count > 40){
+        if (firework.count > 35){
           item.remove()
         }
       }
@@ -332,6 +352,7 @@ Renderer.queries = {
   buttons: { components: [Button] },
   confettis: { components: [Confetti] },
   fireworks: { components: [Firework] },
+  particles: { components: [Particle] },
   intersectingCircles: { components: [Intersecting] },
   context: { components: [CanvasContext], mandatory: true },
 };
