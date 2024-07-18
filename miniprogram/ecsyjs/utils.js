@@ -1,13 +1,28 @@
 import {Movement,
    Circle,
    Particle,
+   Firework,
    Button,
    Texts,
     CanvasContext, DemoSettings, Intersecting} from './components.js';
 export function random(a, b) {
   return Math.random() * (b - a) + a;
 }
+export function genFirework(x,y){
+  for (var i = 0; i < 100; i++) {
+    var entity3 = window.world
+      .createEntity()
+      .addComponent(Firework)
 
+    var i0 = entity3.getMutableComponent(Firework);
+    i0.position.set(screenFixX(x + random(-15,15)),screenFixY(y + random(-15,15)));
+    // i0.size.set(300, 350);
+    i0.color = `rgb(${random(0,255)}, ${random(0,255)},${random(0,255)})`;
+    i0.count = random(0,10)
+    i0.rotate = random(0,6.28)
+    i0.height = random(414,1600)
+  }
+}
 export function genParticles(x,y,c){
   // for (var i = 0; i < 50; i++) {
     var entity3 = window.world

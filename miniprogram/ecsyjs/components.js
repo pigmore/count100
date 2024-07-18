@@ -17,7 +17,7 @@ Firework.schema = {
   // size: { type: Vector2Type },
   count: { type: Types.Number, default: 0},
   rotate: { type: Types.Number, default: 0},
-  height: { type: Types.Number, default: 0},
+  type: { type: Types.Number, default: 0},
 };
 
 export class Confetti extends Component {}

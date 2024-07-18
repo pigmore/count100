@@ -11,6 +11,7 @@ import {MovementSystem, Renderer, IntersectionSystem} from './systems.js';
 import {random,
   screenFixX,
   screenFixY,
+  genFirework,
   genButton,
 } from './utils.js';
 
@@ -98,7 +99,8 @@ export default class Main {
     // i0.size.set(300, 70);
 
     // genButton(this.world,375/2,812-165,50,50, window.userLanguage == 'en' ? 'CHALLENGE':'+',window.starSum < 0,0,window.starSum < 0,10)
-    this.genButtonNew(random(0,325),random(0,812-50),50,50)
+    // this.genButtonNew(random(0,325),random(0,812-50),50,50)
+    this.genFirework1(187,812)
     this.genText('countScroe',20,40,'0')
   }
 
@@ -171,8 +173,9 @@ export default class Main {
   }
 
 
-  genFirework(x,y){
-    for (var i = 0; i < 100; i++) {
+
+  genFirework1(x,y){
+    // for (var i = 0; i < 100; i++) {
       var entity3 = this.world
         .createEntity()
         .addComponent(Firework)
@@ -182,9 +185,9 @@ export default class Main {
       // i0.size.set(300, 350);
       i0.color = `rgb(${random(0,255)}, ${random(0,255)},${random(0,255)})`;
       i0.count = random(0,10)
-      i0.rotate = random(0,6.28)
-      i0.height = random(414,1600)
-    }
+      i0.rotate = random(4.8 - 0.2,4.8 + 0.2)
+      i0.type = 1
+    // }
   }
   genConfetti(x,y){
     for (var i = 0; i < 30; i++) {
@@ -214,8 +217,11 @@ export default class Main {
         // this.genConfetti(e.touches[0].clientX,e.touches[0].clientY)
         this.genFirework(e.touches[0].clientX,e.touches[0].clientY)
         this.genText('pop',e.touches[0].clientX,e.touches[0].clientY,'+1',24)
-        this.genButtonNew(random(0,325),random(150,812-150),50,50)
+        this.genFirework1(187,0)
+        // this.genButtonNew(random(0,325),random(150,812-150),50,50)
       }
+      window.countScroe += 1
+      this.genFirework1(187,812)
   }
 
 }

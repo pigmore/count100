@@ -16,6 +16,7 @@ import {
    drawLine,
    random,
    genParticles,
+   genFirework,
    intersection,
   drawRoundedRect
  } from "./utils.js";
@@ -197,37 +198,31 @@ export class Renderer extends System {
     for (var item of fireworks) {
       let firework = item.getMutableComponent(Firework);
       if (firework) {
-        firework.count += 1
-        firework.position.x += Math.cos(firework.rotate)  * ( 200 - firework.count * firework.count / 8 ) / 20
-        firework.position.y += Math.sin(firework.rotate) * ( 200 - firework.count * firework.count / 8) / 20 + 0.1 * firework.count
-        ctx.fillStyle = firework.color;
-        // fillShadowCircle(ctx, 0, 0, circle.radius);
-        // ctx.rotate(circle.rotateDegree * Math.PI / 180)
-        // ctx.save()
-        // ctx.translate(firework.position.x ,firework.position.y)
-        // ctx.rotate(firework.rotate)
+        switch (firework.type) {
+          case 1:
+          firework.count += 1
+          firework.position.x += Math.cos(firework.rotate)  * ( 400 - firework.count * firework.count / 16 ) / 20
+          firework.position.y += Math.sin(firework.rotate) * ( 400 - firework.count * firework.count / 16) / 20 + 0.1 * firework.count
+          ctx.fillStyle = firework.color;
+            genParticles(firework.position.x,firework.position.y,firework.color)
 
+          if (firework.count > 75){
+            genFirework(firework.position.x,firework.position.y)
+            item.remove()
+          }
+            break;
+          default:
+          firework.count += 1
+          firework.position.x += Math.cos(firework.rotate)  * ( 200 - firework.count * firework.count / 8 ) / 20
+          firework.position.y += Math.sin(firework.rotate) * ( 200 - firework.count * firework.count / 8) / 20 + 0.1 * firework.count
+          ctx.fillStyle = firework.color;
+            genParticles(firework.position.x,firework.position.y,firework.color)
 
-        // ctx.fillRect(
-        // - (firework.count % 20) / 2,
-        // 0,
-        //
-        // firework.count % 20,
-        // 7,
-        // );
-        // ctx.restore()
-        // for (var i = 0; i < 10; i++) {
-          genParticles(firework.position.x,firework.position.y,firework.color)
-
-          // fillCircle(ctx,
-          //   firework.position.x,
-          //   firework.position.y,
-          //   4)
-        // }
-
-        if (firework.count > 35){
-          item.remove()
+          if (firework.count > 35){
+            item.remove()
+          }
         }
+
       }
     }
     for (var item of confettis) {
